@@ -12,6 +12,7 @@ class MainWindow(QMainWindow):
         self.top = 100
         self.width = 1280
         self.height = 786
+        self.Action = M_Action()
         self.initUI()
 
     def initUI(self):
@@ -31,12 +32,9 @@ class MainWindow(QMainWindow):
         self.gameMenu = menubar.addMenu('&Game')
         self.helpMenu = menubar.addMenu('&Help')
         self.addMenuToFile()
-
-        """
-        ===============================================================================
-         adding submenu to File menu   
-        ===============================================================================
-        """
+        self.addMenuToEdit()
+        self.addMenuToGame()
+        self.addMenuToHelp()
 
     def createrToolbar(self):
         SM_exit = self.subMenuExit()
@@ -44,6 +42,11 @@ class MainWindow(QMainWindow):
         toolbar.addAction(SM_exit)
 
     def addMenuToFile(self):
+        """
+        ===============================================================================
+         adding submenu to File menu
+        ===============================================================================
+        """
         subNew = self.subMenuNew()
         subSave = self.subMenuSave()
         subSaveAs = self.subMenuSaveAs()
@@ -57,6 +60,12 @@ class MainWindow(QMainWindow):
         self.fileMenu.addAction(subPrint)
         self.fileMenu.addAction(subExit)
 
+    def addMenuToEdit(self):
+        """
+        ===============================================================================
+         adding submenu to Edit menu
+        ===============================================================================
+        """
         subUndo = self.subMenuUndo()
         subRedo = self.subMenuRedo()
         subCut = self.subMenuCut()
@@ -68,11 +77,23 @@ class MainWindow(QMainWindow):
         self.editMenu.addAction(subCopy)
         self.editMenu.addAction(subPaste)
 
+    def addMenuToGame(self):
+        """
+        ===============================================================================
+         adding submenu to Game menu
+        ===============================================================================
+        """
         subWord = self.subMenuWord()
         subSentence = self.subMenuSentence()
         self.gameMenu.addAction(subWord)
         self.gameMenu.addAction(subSentence)
 
+    def addMenuToHelp(self):
+        """
+        ===============================================================================
+         adding submenu to Help menu
+        ===============================================================================
+        """
         subHelp = self.subMenuHelp()
         subAbout = self.subMenuAbout()
         self.helpMenu.addAction(subHelp)
@@ -112,7 +133,9 @@ class MainWindow(QMainWindow):
         loadFile = QAction('&Load', self)
         loadFile.setShortcut('Ctrl+L')
         loadFile.setStatusTip('Load file')
+        loadFile.triggered.connect(self.Action.pushLoadMenuClicked)
         return loadFile
+
 
     def subMenuSaveAs(self):
         """
@@ -145,8 +168,8 @@ class MainWindow(QMainWindow):
         exitMenu = QAction(QIcon('resource\Image\Exit.png'), '&Exit', self)
         exitMenu.setShortcut('Ctrl+Q')
         exitMenu.setStatusTip('Exit application')
-        exitAction = M_Action()
-        exitMenu.triggered.connect(exitAction.menuActionExit())
+
+        exitMenu.triggered.connect(self.Action.menuActionExit())
 
         return exitMenu
 
@@ -250,20 +273,6 @@ class MainWindow(QMainWindow):
          Showing whole menu
         ===============================================================================
         """
-
-        """
-        menubar = self.menuBar()
-        fileMenu = menubar.addMenu('File')
-
-        impMenu = QMenu('Import', self)
-        impAct = QAction('Import mail', self)
-        impMenu.addAction(impAct)
-
-        newAct = QAction('New', self)
-
-        fileMenu.addAction(newAct)
-        fileMenu.addMenu(impMenu)
-"""
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
         self.setWindowIcon(QtGui.QIcon('resource\Image\Window_Icon.png'))
